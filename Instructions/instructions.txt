@@ -1,0 +1,239 @@
+Detecting Reversal Points in US Equities
+Predict local highs and lows in anonymized stock data
+
+
+Overview
+Local highs/lows (reversals) are among the market’s most actionable signals—and the hardest to pinpoint in real time. Your challenge is to build a model that detects these reversal points from anonymized stock (stk) data using a mix of raw features and boolean Signal Descriptors.
+
+🥇 $2,000 — 1st place
+
+🥈 $1,000 — 2nd place
+
+🥉 $500 — 3rd place
+
+Start
+
+a month ago
+Close
+19 days to go
+Description
+A financial time series consists of continuous price movements with intermittent turning points. Traders call these reversals — local highs and lows where the market direction shifts.
+
+This competition challenges you to classify swing points in anonymized stock data. Using both raw numerical features (momentum and ratios) and boolean Signal Descriptors, you’ll build models that map reversal points into one of the four classical swing categories:
+
+H: Local or Global High
+
+L: Local or Global Low
+
+None: Not a swing point
+
+These labels define market structure and are widely used in trend analysis, chart pattern recognition, and algorithmic trading.
+
+Participants will train on a provided dataset (train.csv) and submit models that Kaggle will score against a hidden validation set.
+
+Evaluation
+Submissions will be evaluated on the hidden validation set using:
+
+Primary Metric
+
+Macro F1-score — treats all swing classes equally, regardless of class imbalance.
+
+Tie-breakers (in order)
+
+Macro Balanced Accuracy
+
+Matthews Correlation Coefficient (multi-class)
+
+Inference runtime
+
+This ensures that winning models capture swing structure across all four categories, not just the majority class.
+
+Prizes
+Describe how many participants will win and what they'll receive. You can edit the list below.
+
+Total Prizes Available: $4000
+
+1st Place - $2000
+2nd Place - $1000
+3rd Place - $500
+Citation
+Ozzy Met. Detecting Reversal Points in US Equities. https://kaggle.com/competitions/detecting-reversal-points-in-us-equities, 2025. Kaggle.
+
+
+
+Dataset Description
+Time Series Classification Competition Dataset
+Overview
+This dataset contains time series data from 6 anonymized financial instruments for classification tasks.
+
+Dataset Statistics
+Total Samples: 2,760
+Features: 68504 (excluding metadata and target)
+Time Period: 2023-04-03 to 2025-01-31
+Unique Tickers: 6
+Target Variable
+class_label: The target variable for 3-class classification
+Multi-class classification (3 classes): ['H', 'L', 'None']
+Class H: 82 samples (3.0%)
+Class L: 81 samples (2.9%)
+Class None: 2597 samples (94.1%)
+
+Class Conversion Mapping:
+Original -> New:
+HH, LH -> H (High patterns)
+HL, LL -> L (Low patterns)
+Others -> None (No clear pattern)
+Missing/NaN values converted to None: 2597 samples
+
+Problem Definition
+This is a 3-class classification problem based on financial time series patterns:
+
+Class H: High patterns (originally HH: Higher High, LH: Lower High)
+Class L: Low patterns (originally HL: Higher Low, LL: Lower Low)
+Class None: No clear pattern or missing data
+The original 5-class labels have been consolidated to create a more balanced and interpretable classification task.
+
+Files Description
+train.csv
+Contains all features including the target variable 'class_label'
+Use this data to train your models
+Rows: 1932 (approximately 70% of total data)
+test.csv
+Contains all features EXCEPT 'class_label'
+Make predictions on this data for submission
+Includes 'id' column for matching predictions
+Rows: 828 (approximately 30% of total data)
+sample_submission.csv
+Shows the expected format for your predictions
+Columns: id, class_label
+Submit your predictions in exactly this format
+Important: Predictions must be one of the valid class values: H, L, None
+solution.csv (Competition Setup)
+Ground truth data for scoring submissions
+Columns: id, class_label, Usage
+Usage column determines public/private test split:
+"Public": Used for public leaderboard (visible during competition)
+"Private": Used for final private leaderboard (determines winners)
+Approximately 30% public, 70% private split
+Column Descriptions
+Metadata Columns
+id: Unique identifier for test set predictions (test.csv only)
+ticker_id: Anonymous identifier for the financial instrument (001, 002, etc.)
+Each ticker represents a different financial time series
+Use this to understand which samples belong to the same instrument
+Consider ticker-specific patterns in your modeling
+t: Timestamp (YYYY-MM-DD format)
+Time series data spanning from 2023-04-03 to 2025-01-31
+Data is chronologically ordered within each ticker
+Feature Columns (68504 total)
+The dataset contains various technical and fundamental features derived from financial time series data.
+Note: Sensitive columns containing price information, returns, and PnL data have been removed to ensure anonymization.
+
+Target Column
+class_label: Classification target (present in train.csv only)
+3-class classification: H, L, None
+H: High patterns (HH: Higher High, LH: Lower High trends)
+L: Low patterns (HL: Higher Low, LL: Lower Low trends)
+None: No clear pattern or missing data
+Target to predict for the test set
+Data Characteristics
+Ticker Distribution
+Average samples per ticker: 460
+Min samples per ticker: 460
+Max samples per ticker: 460
+Each ticker has time series data spanning the full date range
+Data Types
+Numeric columns: 5
+Categorical columns: 3
+Evaluation Metric
+Your submissions will be evaluated based on classification accuracy.
+
+Submission Format
+Submit a CSV file with exactly 828 predictions in the format:
+
+id,class_label
+0,H
+1,L
+2,None
+3,H
+4,L
+...
+Important: Ensure your predictions only contain valid class values: H, L, None
+
+Important Notes About ticker_id
+ticker_id is crucial for understanding the data structure
+Each ticker (001, 002, etc.) represents a different financial instrument
+Time series patterns may vary significantly between tickers
+Consider both:
+Within-ticker patterns: How each instrument behaves over time
+Cross-ticker patterns: Common behaviors across different instruments
+Data Preprocessing Notes
+All financial instruments have been anonymized as ticker_id (001, 002, etc.)
+The dataset has been cleaned and preprocessed
+Sensitive price and return information has been removed
+Time series data maintains chronological order within each ticker
+Features have been normalized/standardized where appropriate
+Tips for Participants
+Temporal Modeling: Explore time-based patterns within each ticker using the 't' column
+Ticker-Specific Features: Consider creating features that capture each ticker's unique behavior
+Cross-Ticker Analysis: Look for patterns that generalize across different instruments
+Feature Engineering: The temporal dimension and ticker grouping offer rich opportunities
+Ensemble Methods: Often work well on financial time series data
+3-Class Strategy: Consider the semantic meaning of H/L patterns vs None when designing features
+Class Imbalance: Handle the imbalanced nature of pattern detection (many None vs fewer H/L)
+Time Series Validation: Use time-aware cross-validation strategies
+Ticker Leakage: Be careful not to use future information when creating features
+Pattern Recognition: Focus on features that can distinguish trend patterns (H vs L) from noise (None)
+Data Usage Strategy
+Consider these modeling approaches:
+
+Global Model: Train one model on all tickers
+Ticker-Specific Models: Train separate models for each ticker
+Hierarchical Models: Combine global and ticker-specific approaches
+Transfer Learning: Use patterns from well-represented tickers for sparse ones
+Good luck with your predictions!
+
+Dataset prepared on: 2025-09-10 21:56:14
+Total tickers: 6
+Date range: 2023-04-03 to 2025-01-31
+Class distribution: {'H': 82, 'L': 81, 'None': 2597}
+
+Files
+4 files
+
+Size
+1.15 GB
+
+Type
+csv, txt
+
+License
+Subject to Competition Rules
+
+competition_data(4 files)
+Competition Rules
+
+
+To see this data you need to agree to the competition rules.
+Join the competition to view the data.
+
+
+Join the competition
+Data Explorer
+1.15 GB
+
+competition_data
+
+Summary
+4 files
+
+2 columns
+
+
+Download All
+kaggle competitions download -c detecting-reversal-points-in-us-equities
+Download data
+
+Metadata
+License
+Subject to Competition Rules
